@@ -1,0 +1,42 @@
+// WieWaar Kempen – main stylesheet.
+// Bootstrap is compiled by dartsass-rails into app/assets/builds/application.css.
+
+// 1. Kempen palette (same colors as the concept screens)
+$kempen-navy: #173A63;
+$kempen-blue: #2E9BDB;
+$kempen-link: #1E78B4;
+$kempen-grey: #D6DADF;
+$kempen-muted: #5E6670;
+$kempen-bg: #F3F5F8;
+$kempen-orange: #E07B24;
+
+// 2. Bootstrap overrides (must come before importing Bootstrap)
+$primary: $kempen-navy;
+$secondary: $kempen-muted;
+$info: $kempen-blue;
+$warning: $kempen-orange;
+$light: $kempen-bg;
+
+$body-bg: $kempen-bg;
+$body-color: $kempen-navy;
+$link-color: $kempen-link;
+
+// Fonts are not loaded from Google yet; the system font is the fallback.
+$font-family-sans-serif: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$headings-font-family: "Montserrat", $font-family-sans-serif;
+$headings-font-weight: 700;
+
+$border-radius: .75rem;
+$border-radius-sm: .5rem;
+$border-radius-lg: 1.25rem;
+
+// 3. Bootstrap itself
+@import "bootstrap";
+
+// 4. Status colors used on the board, as CSS variables for views and Stimulus
+:root {
+  --ww-status-office: #{$kempen-blue};
+  --ww-status-home: #{$kempen-navy};
+  --ww-status-away: #{$kempen-orange};
+  --ww-status-off: #A3AAB2;
+}
