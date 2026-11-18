@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_114937) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_123747) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,5 +42,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_114937) do
     t.index ["email"], name: "index_employees_on_email", unique: true
   end
 
+  create_table "ticketdiensts", force: :cascade do |t|
+    t.date "date", null: false
+    t.bigint "employee_id"
+    t.string "raw_name", null: false
+    t.string "google_event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date", "raw_name"], name: "index_ticketdiensts_on_date_and_raw_name", unique: true
+    t.index ["employee_id"], name: "index_ticketdiensts_on_employee_id"
+  end
+
   add_foreign_key "cal_events", "employees"
+  add_foreign_key "ticketdiensts", "employees"
 end
