@@ -23,4 +23,11 @@ module BoardHelper
     display = STATUS_DISPLAY.fetch(status)
     tag.span(display[:label], class: "badge text-bg-#{display[:color]}")
   end
+
+    NOT_AVAILABLE_FOR_DUTY = %w[thuis vakantie ziek afwezig].freeze
+
+  def available_for_duty?(ticketdienst, statuses)
+    ticketdienst.employee.present? &&
+      !NOT_AVAILABLE_FOR_DUTY.include?(statuses[ticketdienst.employee])
+  end
 end

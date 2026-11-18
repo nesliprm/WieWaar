@@ -34,7 +34,7 @@ events.each_with_index do |(name, status, starts_at, ends_at), i|
 end
 
 # Ticketdienst today: two people, one of them misspelled on purpose
-[ [ "Nesli", employees["Nesli"] ], [ "Tobia", nil ] ].each do |raw_name, employee|
+[ [ "Nesli", employees["Nesli"] ], [ "Tobias", employees["Tobias"] ] ].each do |raw_name, employee|
   Ticketdienst.find_or_create_by!(date: today, raw_name: raw_name) do |t|
     t.employee = employee
     t.google_event_id = "seed-ticketdienst-#{today}"

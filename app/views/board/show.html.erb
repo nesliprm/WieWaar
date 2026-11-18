@@ -1,4 +1,16 @@
 <div class="container py-4">
+  <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
+  <% missing = 2 - available.size %>
+  <div class="alert <%= missing.positive? ? "alert-warning" : "alert-info" %> mb-4">
+    <strong>Ticketdienst vandaag:</strong>
+    <%= available.map { |t| t.employee.name }.to_sentence(two_words_connector: " & ", last_word_connector: " & ") %>
+    <% if missing.positive? %>
+      · nog <%= missing %> nodig
+    <% end %>
+    <% @ticketdienst.reject(&:employee).each do |t| %>
+      <div class="small mt-1">Onbekende naam in de Ticketdienst-agenda: <strong><%= t.raw_name %></strong></div>
+    <% end %>
+  </div>
   <div class="row g-3">
     <% BoardHelper::ZONES.each do |zone| %>
       <% people = @statuses.select { |_employee, status| zone[:statuses].include?(status) } %>
@@ -16,7 +28,7 @@
               </li>
             <% end %>
             <% if people.empty? %>
-              <li class="list-group-item text-secondary">Niemand</li>
+              <li class="list-group-item text-secondary">-</li>
             <% end %>
           </ul>
         </div>
