@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_18_123747) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_124754) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_123747) do
     t.index ["employee_id"], name: "index_cal_events_on_employee_id"
     t.index ["ends_at"], name: "index_cal_events_on_ends_at"
     t.index ["starts_at"], name: "index_cal_events_on_starts_at"
+  end
+
+  create_table "calendar_syncs", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.string "google_calendar_id", null: false
+    t.string "sync_token"
+    t.string "channel_id"
+    t.string "channel_resource_id"
+    t.datetime "channel_expires_at"
+    t.datetime "last_synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_calendar_syncs_on_channel_id", unique: true
+    t.index ["employee_id"], name: "index_calendar_syncs_on_employee_id", unique: true
+    t.index ["google_calendar_id"], name: "index_calendar_syncs_on_google_calendar_id", unique: true
   end
 
   create_table "employees", force: :cascade do |t|
@@ -54,5 +69,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_18_123747) do
   end
 
   add_foreign_key "cal_events", "employees"
+  add_foreign_key "calendar_syncs", "employees"
   add_foreign_key "ticketdiensts", "employees"
 end
