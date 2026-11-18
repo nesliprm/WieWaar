@@ -66,6 +66,9 @@ jobs:
         run: bin/rubocop -f github
 
   test:
+    # Turned off for now: there are no tests or migrations yet (no db/schema.rb).
+    # Remove this line to run the tests again.
+    if: false
     runs-on: ubuntu-latest
 
     services:
@@ -97,6 +100,9 @@ jobs:
         run: bin/rails db:test:prepare test
 
   system-test:
+    # Turned off for now: there are no tests or migrations yet (no db/schema.rb).
+    # Remove this line to run the system tests again.
+    if: false
     runs-on: ubuntu-latest
 
     services:
