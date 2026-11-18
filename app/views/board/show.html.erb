@@ -3,7 +3,7 @@
     <% @employees.each do |employee| %>
       <li class="list-group-item d-flex justify-content-between">
         <span><%= employee.name %></span>
-        <span class="badge text-bg-primary"><%= status_badge(employee.status_at(@now)) %></span>
+        <%= status_badge(employee.status_at(@now)) %>
       </li>
     <% end %>
   </ul>
