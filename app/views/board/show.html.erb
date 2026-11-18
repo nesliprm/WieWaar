@@ -1,10 +1,26 @@
 <div class="container py-4">
-  <ul class="list-group">
-    <% @employees.each do |employee| %>
-      <li class="list-group-item d-flex justify-content-between">
-        <span><%= employee.name %></span>
-        <%= status_badge(employee.status_at(@now)) %>
-      </li>
+  <div class="row g-3">
+    <% BoardHelper::ZONES.each do |zone| %>
+      <% people = @statuses.select { |_employee, status| zone[:statuses].include?(status) } %>
+      <div class="col-12 col-md-6 col-xl-4">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between">
+            <strong><%= zone[:title] %></strong>
+            <span class="text-secondary"><%= people.size %></span>
+          </div>
+          <ul class="list-group list-group-flush">
+            <% people.each do |employee, status| %>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><%= employee.name %></span>
+                <%= status_badge(status) if zone[:statuses].size > 1 %>
+              </li>
+            <% end %>
+            <% if people.empty? %>
+              <li class="list-group-item text-secondary">Niemand</li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     <% end %>
-  </ul>
+  </div>
 </div>
