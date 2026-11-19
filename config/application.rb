@@ -24,5 +24,7 @@ module WieWaar
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.time_zone = "Europe/Amsterdam"
+    config.i18n.default_locale = :nl
+    config.i18n.available_locales = [ :nl ]
   end
 end

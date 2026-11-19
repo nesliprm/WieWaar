@@ -80,3 +80,37 @@ $border-radius-lg: 1.25rem;
 .zone--bij-klant { --zone-color: #{$success}; }
 .zone--prive     { --zone-color: var(--ww-status-away); }
 .zone--afwezig   { --zone-color: var(--ww-status-off); }
+
+// 6. Header
+.board-header {
+  background: $white;
+  box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
+
+  &__brand {
+    font-family: $headings-font-family;
+    font-weight: 800;
+    font-size: 1.9rem;
+    line-height: 1;
+    color: $kempen-navy;
+    span { color: $kempen-link; font-weight: 600; }
+  }
+
+  &__sub {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: $kempen-muted;
+  }
+
+  &__clock {
+    font-family: $headings-font-family;
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    color: $kempen-navy;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__date { color: $kempen-muted; }
+}
