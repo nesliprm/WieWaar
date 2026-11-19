@@ -1,16 +1,5 @@
 module BoardHelper
-  STATUS_DISPLAY = {
-    "kantoor"   => { label: "Op kantoor",     color: "info" },
-    "thuis"     => { label: "Werkt thuis",    color: "primary" },
-    "bij_klant" => { label: "Bij klant",      color: "success" },
-    "prive"     => { label: "Privé afspraak", color: "warning" },
-    "overleg"   => { label: "In overleg",     color: "secondary" },
-    "vakantie"  => { label: "Vakantie",       color: "light" },
-    "ziek"      => { label: "Afwezig",        color: "light" },
-    "afwezig"   => { label: "Afwezig",        color: "light" }
-  }.freeze
-
-   ZONES = [
+  ZONES = [
     { key: "kantoor",   icon: "office",    title: "Op kantoor",     statuses: %w[kantoor] },
     { key: "thuis",     icon: "home",      title: "Werkt thuis",    statuses: %w[thuis] },
     { key: "overleg",   icon: "chat",      title: "In overleg",     statuses: %w[overleg] },
@@ -19,12 +8,7 @@ module BoardHelper
     { key: "afwezig",   icon: "away",      title: "Afwezig",        statuses: %w[vakantie ziek afwezig] }
   ].freeze
 
-  def status_badge(status)
-    display = STATUS_DISPLAY.fetch(status)
-    tag.span(display[:label], class: "badge text-bg-#{display[:color]}")
-  end
-
-    NOT_AVAILABLE_FOR_DUTY = %w[thuis vakantie ziek afwezig].freeze
+  NOT_AVAILABLE_FOR_DUTY = %w[thuis vakantie ziek afwezig].freeze
 
   def available_for_duty?(ticketdienst, statuses)
     ticketdienst.employee.present? &&
