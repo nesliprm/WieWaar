@@ -1,0 +1,58 @@
+<% content_for :head do %>
+  <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+<% end %>
+
+<div class="container-fluid px-4 py-4" data-controller="refresh">
+  <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
+
+  <div class="board-grid">
+    <section class="zone zone--ticketdienst">
+      <header class="zone__header">
+        <span class="zone__icon"><%= inline_svg_tag "icons/oncall.svg", aria_hidden: true %></span>
+        <h2 class="zone__title">Ticketdienst</h2>
+        <span class="zone__count"><%= available.size %></span>
+      </header>
+      <ul class="zone__people list-unstyled">
+        <% available.each do |t| %>
+          <li class="zone__person">
+            <div class="zone__name"><%= t.employee.name %></div>
+          </li>
+        <% end %>
+        <% if available.empty? %>
+          <li class="zone__person zone__person--warning">Niemand ingeroosterd</li>
+        <% end %>
+        <% @ticketdienst.reject(&:employee).each do |t| %>
+          <li class="zone__person zone__person--warning" title="Onbekende naam in de Ticketdienst-agenda">
+            Onbekend: <%= t.raw_name %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+
+    <% BoardHelper::ZONES.each do |zone| %>
+      <% people = people_in(zone, @statuses) %>
+      <section class="zone zone--<%= zone[:key] %>">
+        <header class="zone__header">
+          <span class="zone__icon"><%= inline_svg_tag "icons/#{zone[:icon]}.svg", aria_hidden: true %></span>
+          <h2 class="zone__title"><%= zone[:title] %></h2>
+          <span class="zone__count"><%= people.size %></span>
+        </header>
+        <ul class="zone__people list-unstyled">
+          <% people.each do |employee, statuses| %>
+            <li class="zone__person">
+              <div class="zone__name"><%= employee.name %></div>
+              <% label = status_tag(statuses) || status_detail(zone_event(zone, @events[employee])) %>
+              <% if in_meeting_elsewhere?(zone, statuses) %>
+                <span class="zone__tag-icon" role="img" aria-label="In overleg" title="In overleg">
+                  <%= inline_svg_tag "icons/chat.svg", aria_hidden: true %>
+                </span>
+              <% elsif label %>
+                <span class="zone__tag"><%= label %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+</div>

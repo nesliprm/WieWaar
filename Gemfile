@@ -64,3 +64,10 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "dartsass-rails", "~> 0.5.1"
+gem "bootstrap", "~> 5.3"
+
+gem "rails-i18n", "~> 8.1"
+
+gem "inline_svg", "~> 1.10"
