@@ -224,4 +224,17 @@ html {
   }
 
   &__date { color: $kempen-muted; }
+
+  &__brand,
+  &__sub,
+  &__date { white-space: nowrap; }
+
+  // Phones (below 576px): everything smaller so it stays on one row.
+  @include media-breakpoint-down(sm) {
+    &__logo  { width: 2.5rem; height: 2.5rem; }
+    &__brand { font-size: 1.3rem; }
+    &__sub   { font-size: 0.6rem; letter-spacing: 0.2em; margin-left: 0.15rem; margin-top: 0.2rem; }
+    &__clock { font-size: 1.75rem; }
+    &__date  { font-size: 0.75rem; }
+  }
 }

@@ -10,7 +10,10 @@
     <%= yield :header_summary %>
     <div class="text-end">
       <div class="board-header__clock"><%= l(Time.current, format: "%H:%M") %></div>
-      <div class="board-header__date"><%= l(Time.current.to_date, format: "%A %-d %B") %></div>
+      <div class="board-header__date">
+        <span class="d-none d-sm-inline"><%= l(Time.current.to_date, format: "%A %-d %B") %></span>
+        <span class="d-sm-none"><%= l(Time.current.to_date, format: "%a %-d %b") %></span>
+      </div>
     </div>
   </div>
 </header>
