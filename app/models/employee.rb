@@ -7,18 +7,25 @@ class Employee < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
   scope :active, -> { where(active: true) }
 
-  STATUS_PRIORITY = %w[afwezig ziek vakantie prive bij_klant overleg thuis kantoor].freeze
+  # Statuses that put someone in exactly one zone (first match wins).
+  EXCLUSIVE_STATUSES = %w[afwezig ziek vakantie prive bij_klant].freeze
 
-  def current_event_at(time = Time.current)
-    events = cal_events.happening_at(time).to_a
-    STATUS_PRIORITY.each do |status|
-      event = events.find { |e| e.status == status }
-      return event if event
-    end
-    nil
+  # Turns the events happening right now into the zones someone belongs to:
+  # one exclusive status, or a location (kantoor/thuis) plus "overleg" when in a meeting.
+  def self.statuses_for(events)
+    current = events.map(&:status)
+    exclusive = EXCLUSIVE_STATUSES.find { |status| current.include?(status) }
+    return [ exclusive ] if exclusive
+
+    location = current.include?("thuis") ? "thuis" : "kantoor"
+    current.include?("overleg") ? [ location, "overleg" ] : [ location ]
   end
 
-  def status_at(time = Time.current)
-    current_event_at(time)&.status || "kantoor"
+  def current_events_at(time = Time.current)
+    cal_events.happening_at(time).to_a
+  end
+
+  def statuses_at(time = Time.current)
+    self.class.statuses_for(current_events_at(time))
   end
 end

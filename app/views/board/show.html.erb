@@ -1,47 +1,58 @@
 <% content_for :head do %>
   <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <% end %>
-<div class="container py-4" data-controller="board">
+
+<div class="container-fluid px-4 py-4" data-controller="refresh">
   <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
-  <% missing = 2 - available.size %>
-  <div class="alert <%= missing.positive? ? "alert-warning" : "alert-info" %> mb-4">
-    <strong>Ticketdienst vandaag:</strong>
-    <%= available.map { |t| t.employee.name }.to_sentence(two_words_connector: " & ", last_word_connector: " & ") %>
-    <% if missing.positive? %>
-      · nog <%= missing %> nodig
-    <% end %>
-    <% @ticketdienst.reject(&:employee).each do |t| %>
-      <div class="small mt-1">Onbekende naam in de Ticketdienst-agenda: <strong><%= t.raw_name %></strong></div>
-    <% end %>
-  </div>
-  <div class="row g-3">
+
+  <div class="board-grid">
+    <section class="zone zone--ticketdienst">
+      <header class="zone__header">
+        <span class="zone__icon"><%= inline_svg_tag "icons/oncall.svg", aria_hidden: true %></span>
+        <h2 class="zone__title">Ticketdienst</h2>
+        <span class="zone__count"><%= available.size %></span>
+      </header>
+      <ul class="zone__people list-unstyled">
+        <% available.each do |t| %>
+          <li class="zone__person">
+            <div class="zone__name"><%= t.employee.name %></div>
+          </li>
+        <% end %>
+        <% if available.empty? %>
+          <li class="zone__person zone__person--warning">Niemand ingeroosterd</li>
+        <% end %>
+        <% @ticketdienst.reject(&:employee).each do |t| %>
+          <li class="zone__person zone__person--warning" title="Onbekende naam in de Ticketdienst-agenda">
+            Onbekend: <%= t.raw_name %>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+
     <% BoardHelper::ZONES.each do |zone| %>
-      <% people = @statuses.select { |_employee, status| zone[:statuses].include?(status) } %>
-      <div class="col-12 col-md-6 col-xl-4">
-        <div class="card h-100 zone zone--<%= zone[:key] %>">
-          <div class="card-header d-flex justify-content-between">
-            <strong><%= zone[:title] %></strong>
-            <span class="zone__count"><%= people.size %></span>
-          </div>
-          <ul class="list-group list-group-flush">
-            <% people.each do |employee, status| %>
-              <li class="list-group-item d-flex justify-content-between">
-                <div>
-                  <div><%= employee.name %></div>
-                  <% detail = status_detail(@events[employee]) %>
-                  <% if detail %>
-                    <small class="text-secondary"><%= detail %></small>
-                  <% end %>
-                </div>
-                <%= status_badge(status) if status == "vakantie" %>
-              </li>
-            <% end %>
-            <% if people.empty? %>
-              <li class="list-group-item zone__empty">-</li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
+      <% people = people_in(zone, @statuses) %>
+      <section class="zone zone--<%= zone[:key] %>">
+        <header class="zone__header">
+          <span class="zone__icon"><%= inline_svg_tag "icons/#{zone[:icon]}.svg", aria_hidden: true %></span>
+          <h2 class="zone__title"><%= zone[:title] %></h2>
+          <span class="zone__count"><%= people.size %></span>
+        </header>
+        <ul class="zone__people list-unstyled">
+          <% people.each do |employee, statuses| %>
+            <li class="zone__person">
+              <div class="zone__name"><%= employee.name %></div>
+              <% label = status_tag(statuses) || status_detail(zone_event(zone, @events[employee])) %>
+              <% if in_meeting_elsewhere?(zone, statuses) %>
+                <span class="zone__tag-icon" role="img" aria-label="In overleg" title="In overleg">
+                  <%= inline_svg_tag "icons/chat.svg", aria_hidden: true %>
+                </span>
+              <% elsif label %>
+                <span class="zone__tag"><%= label %></span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
     <% end %>
   </div>
 </div>

@@ -9,6 +9,10 @@ $kempen-grey: #D6DADF;
 $kempen-muted: #5E6670;
 $kempen-bg: #F3F5F8;
 $kempen-orange: #E07B24;
+$kempen-coral: #FF8559;
+$kempen-petrol: #00798C;
+$kempen-lilac: #A47DAB;
+$kempen-mustard: #D9A23A;
 
 // 2. Bootstrap overrides (must come before importing Bootstrap)
 $primary: $kempen-navy;
@@ -36,50 +40,123 @@ $border-radius-lg: 1.25rem;
 // 4. Status colors used on the board, as CSS variables for views and Stimulus
 :root {
   --ww-status-office: #{$kempen-blue};
-  --ww-status-home: #{$kempen-navy};
-  --ww-status-away: #{$kempen-orange};
-  --ww-status-off: #A3AAB2;
+  --ww-status-home: #{$kempen-mustard};
+  --ww-status-meeting: #{$kempen-navy};
+  --ww-status-away: #{$kempen-lilac};
+  --ww-status-off: #8A929B;
+  --ww-status-duty: #{$kempen-coral};
+  --ww-status-client: #{$kempen-petrol};
 }
 
-// 5. Board zones
+// 5. Board
+.board-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  // Laptop/TV layout: Op kantoor tall on the left, the rest in a 3×2 grid.
+  // The areas below are the map; each zone is placed by its name.
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: 2fr repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      "kantoor ticketdienst overleg bij-klant"
+      "kantoor thuis        prive   afwezig";
+
+    .zone--kantoor      { grid-area: kantoor; }
+    .zone--ticketdienst { grid-area: ticketdienst; }
+    .zone--overleg      { grid-area: overleg; }
+    .zone--bij-klant    { grid-area: bij-klant; }
+    .zone--thuis        { grid-area: thuis; }
+    .zone--afwezig      { grid-area: afwezig; }
+    .zone--prive        { grid-area: prive; }
+  }
+}
+
 .zone {
   --zone-color: var(--ww-status-office);
-  border: 0;
-  border-top: 4px solid var(--zone-color);
-  box-shadow: 0 1px 3px rgba($kempen-navy, 0.08);
+  background: $white;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
+}
 
-  .card-header {
-    background: $white;
-    border-bottom: 0;
-    font-size: 1.15rem;
-    padding-top: 1rem;
-  }
+.zone__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
 
-  .list-group-item {
-    font-size: 1.1rem;
-    border-color: $kempen-bg;
+.zone__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  background: var(--zone-color);
+  color: $white;
+
+  svg { width: 1.5rem; height: 1.5rem; }
+}
+
+.zone__title { font-size: 1.5rem; margin: 0; }
+.zone__count { color: $kempen-muted; font-size: 1.25rem; }
+
+.zone__people { display: grid; gap: 0.75rem; margin: 0; }
+
+.zone--kantoor .zone__people {
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.zone__count {
-  background: var(--zone-color);
-  color: $white;
-  border-radius: 999px;
-  padding: 0 0.6rem;
+.zone__person {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: $kempen-bg;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.zone__name {
+  font-family: $headings-font-family;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.zone__tag    { color: $kempen-muted; align-self: center; }
+
+// Small outline icon next to a name, e.g. "in a meeting" inside Op kantoor
+.zone__tag-icon {
+  align-self: center;
+  display: inline-flex;
+  color: var(--ww-status-meeting);
+  svg { width: 1.75rem; height: 1.75rem; }
+}
+
+.zone__person--warning {
+  background: rgba($kempen-orange, 0.12);
+  color: #A4520F;
   font-weight: 600;
 }
 
-.zone__empty {
-  color: $kempen-muted;
-  font-style: italic;
-}
+.zone--prive .zone__person { background: rgba($kempen-lilac, 0.1); }
 
 .zone--kantoor   { --zone-color: var(--ww-status-office); }
 .zone--thuis     { --zone-color: var(--ww-status-home); }
-.zone--overleg   { --zone-color: #{$kempen-link}; }
-.zone--bij-klant { --zone-color: #{$success}; }
+.zone--overleg   { --zone-color: var(--ww-status-meeting); }
+.zone--bij-klant { --zone-color: var(--ww-status-client); }
 .zone--prive     { --zone-color: var(--ww-status-away); }
 .zone--afwezig   { --zone-color: var(--ww-status-off); }
+
+.zone--ticketdienst { --zone-color: var(--ww-status-duty); }
 
 // 6. Header
 .board-header {
