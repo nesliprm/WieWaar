@@ -1,12 +1,17 @@
 # Sample data for development: the team and a day of calendar events.
 # Run with: bin/rails db:seed (safe to run again)
 
-names = %w[Willem-Jan Maarten Arthur Esther Barry Wouter James Nesli Joost Tobias Sam]
+initials = {
+  "Willem-Jan" => "WJ", "Maarten" => "MH", "Arthur" => "AW", "Esther" => "EA",
+  "Barry" => "BL", "Wouter" => "WV", "James" => "JH", "Nesli" => "NP",
+  "Joost" => "JW", "Tobias" => "TP", "Sam" => "SB"
+}
 
-employees = names.to_h do |name|
+employees = initials.to_h do |name, letters|
   employee = Employee.find_or_create_by!(email: "#{name.downcase}@example.com") do |e|
     e.name = name
   end
+  employee.update!(initials: letters)
   [ name, employee ]
 end
 

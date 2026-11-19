@@ -15,7 +15,10 @@
       <ul class="zone__people list-unstyled">
         <% available.each do |t| %>
           <li class="zone__person">
-            <div class="zone__name"><%= t.employee.name %></div>
+            <div class="zone__who">
+              <%= render "shared/avatar", employee: t.employee %>
+              <div class="zone__name"><%= t.employee.name %></div>
+            </div>
           </li>
         <% end %>
         <% if available.empty? %>
@@ -40,7 +43,10 @@
         <ul class="zone__people list-unstyled">
           <% people.each do |employee, statuses| %>
             <li class="zone__person">
-              <div class="zone__name"><%= employee.name %></div>
+              <div class="zone__who">
+                <%= render "shared/avatar", employee: employee %>
+                <div class="zone__name"><%= employee.name %></div>
+              </div>
               <% label = status_tag(statuses) || status_detail(zone_event(zone, @events[employee])) %>
               <% if in_meeting_elsewhere?(zone, statuses) %>
                 <span class="zone__tag-icon" role="img" aria-label="In overleg" title="In overleg">
