@@ -30,4 +30,14 @@ module BoardHelper
     ticketdienst.employee.present? &&
       !NOT_AVAILABLE_FOR_DUTY.include?(statuses[ticketdienst.employee])
   end
+
+  def status_detail(event)
+    return if event.nil? || event.all_day?
+
+    time = localize(event.ends_at, format: "%H:%M")
+    case event.status
+    when "prive", "bij_klant" then "terug om #{time}"
+    when "overleg" then "tot #{time}"
+    end
+  end
 end

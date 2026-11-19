@@ -9,8 +9,16 @@ class Employee < ApplicationRecord
 
   STATUS_PRIORITY = %w[afwezig ziek vakantie prive bij_klant overleg thuis kantoor].freeze
 
+  def current_event_at(time = Time.current)
+    events = cal_events.happening_at(time).to_a
+    STATUS_PRIORITY.each do |status|
+      event = events.find { |e| e.status == status }
+      return event if event
+    end
+    nil
+  end
+
   def status_at(time = Time.current)
-    current = cal_events.happening_at(time).pluck(:status)
-    STATUS_PRIORITY.find { |status| current.include?(status) } || "kantoor"
+    current_event_at(time)&.status || "kantoor"
   end
 end

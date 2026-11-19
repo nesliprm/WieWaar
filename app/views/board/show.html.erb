@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <% end %>
-<div class="container py-4" data-controller="refresh">
+<div class="container py-4" data-controller="board">
   <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
   <% missing = 2 - available.size %>
   <div class="alert <%= missing.positive? ? "alert-warning" : "alert-info" %> mb-4">
@@ -26,7 +26,13 @@
           <ul class="list-group list-group-flush">
             <% people.each do |employee, status| %>
               <li class="list-group-item d-flex justify-content-between">
-                <span><%= employee.name %></span>
+                <div>
+                  <div><%= employee.name %></div>
+                  <% detail = status_detail(@events[employee]) %>
+                  <% if detail %>
+                    <small class="text-secondary"><%= detail %></small>
+                  <% end %>
+                </div>
                 <%= status_badge(status) if zone[:statuses].size > 1 %>
               </li>
             <% end %>
