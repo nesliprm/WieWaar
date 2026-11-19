@@ -1,10 +1,8 @@
 <% content_for :head do %>
   <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <% end %>
-
 <div class="container-fluid px-4 py-4" data-controller="refresh">
   <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
-
   <div class="board-grid">
     <section class="zone zone--ticketdienst">
       <header class="zone__header">
@@ -22,7 +20,7 @@
           </li>
         <% end %>
         <% if available.empty? %>
-          <li class="zone__person zone__person--warning">Niemand ingeroosterd</li>
+          <li class="zone__person zone__person--warning">Niemand beschikbaar</li>
         <% end %>
         <% @ticketdienst.reject(&:employee).each do |t| %>
           <li class="zone__person zone__person--warning" title="Onbekende naam in de Ticketdienst-agenda">
@@ -31,7 +29,6 @@
         <% end %>
       </ul>
     </section>
-
     <% BoardHelper::ZONES.each do |zone| %>
       <% people = people_in(zone, @statuses) %>
       <section class="zone zone--<%= zone[:key] %>">
