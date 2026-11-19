@@ -33,7 +33,7 @@
                     <small class="text-secondary"><%= detail %></small>
                   <% end %>
                 </div>
-                <%= status_badge(status) if zone[:statuses].size > 1 %>
+                <%= status_badge(status) if status == "vakantie" %>
               </li>
             <% end %>
             <% if people.empty? %>
