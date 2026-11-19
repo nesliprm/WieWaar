@@ -48,6 +48,12 @@ $border-radius-lg: 1.25rem;
   --ww-status-client: #{$kempen-petrol};
 }
 
+// Everything is sized in rem, so this one line scales all text with the screen:
+// 16px on a TV/large screen, gradually down to 13px on smaller laptops.
+html {
+  font-size: clamp(13px, 0.45vw + 8px, 16px);
+}
+
 // 5. Board
 .board-grid {
   display: grid;
@@ -82,6 +88,8 @@ $border-radius-lg: 1.25rem;
   border-radius: 1.25rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
+  // Lets the rules below react to the width of the zone itself, not the screen.
+  container-type: inline-size;
 }
 
 .zone__header {
@@ -149,6 +157,24 @@ $border-radius-lg: 1.25rem;
 
 .zone--prive .zone__person { background: rgba($kempen-lilac, 0.1); }
 
+// Narrow zones (e.g. the small columns on a 13" laptop):
+// smaller titles so they stay on one line, and labels move under the name.
+// Note: 280px is the zone's INNER width (without its padding).
+@container (max-width: 280px) {
+  .zone__title { font-size: 1.2rem; }
+  .zone__count { font-size: 1.05rem; }
+  .zone__name  { font-size: 1.1rem; }
+
+  .zone__person {
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .zone__tag,
+  .zone__tag-icon { align-self: flex-start; }
+}
+
 .zone--kantoor   { --zone-color: var(--ww-status-office); }
 .zone--thuis     { --zone-color: var(--ww-status-home); }
 .zone--overleg   { --zone-color: var(--ww-status-meeting); }
@@ -163,10 +189,16 @@ $border-radius-lg: 1.25rem;
   background: $white;
   box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
 
+  // In rem, so the logo scales with the rest of the header on smaller screens.
+  &__logo {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
   &__brand {
     font-family: $headings-font-family;
     font-weight: 800;
-    font-size: 1.9rem;
+    font-size: 2.4rem;
     line-height: 1;
     color: $kempen-navy;
     span { color: $kempen-link; font-weight: 600; }
@@ -175,8 +207,10 @@ $border-radius-lg: 1.25rem;
   &__sub {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
+    margin-left: 0.5rem;
+    margin-top: 0.3rem;
     color: $kempen-muted;
   }
 
