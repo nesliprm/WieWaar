@@ -1,4 +1,7 @@
-<div class="container py-4">
+<% content_for :head do %>
+  <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+<% end %>
+<div class="container py-4" data-controller="refresh">
   <% available = @ticketdienst.select { |t| available_for_duty?(t, @statuses) } %>
   <% missing = 2 - available.size %>
   <div class="alert <%= missing.positive? ? "alert-warning" : "alert-info" %> mb-4">
