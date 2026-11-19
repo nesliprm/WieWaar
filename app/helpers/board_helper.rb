@@ -11,15 +11,6 @@ module BoardHelper
   }.freeze
 
     ZONES = [
-    { title: "Op kantoor",     statuses: %w[kantoor] },
-    { title: "Werkt thuis",    statuses: %w[thuis] },
-    { title: "In overleg",     statuses: %w[overleg] },
-    { title: "Bij klant",      statuses: %w[bij_klant] },
-    { title: "Privé afspraak", statuses: %w[prive] },
-    { title: "Afwezig",        statuses: %w[vakantie ziek afwezig] }
-  ].freeze
-
-    ZONES = [
     { key: "kantoor",   title: "Op kantoor",     statuses: %w[kantoor] },
     { key: "thuis",     title: "Werkt thuis",    statuses: %w[thuis] },
     { key: "overleg",   title: "In overleg",     statuses: %w[overleg] },
