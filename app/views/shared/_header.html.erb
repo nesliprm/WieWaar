@@ -1,8 +1,11 @@
 <header class="bg-white border-bottom">
   <div class="container d-flex align-items-center justify-content-between py-3">
-    <div>
-      <span class="h4 fw-bold text-primary mb-0">WieWaar</span>
-      <span class="h4 text-info mb-0">Kempen</span>
+    <div class="d-flex align-items-center gap-2">
+      <%= image_tag "kempen-logo.svg", alt: "Kempen", width: 40, height: 40 %>
+      <div>
+        <span class="h4 fw-bold text-primary mb-0">WieWaar</span>
+        <span class="h4 text-info mb-0">Kempen</span>
+      </div>
     </div>
     <span class="text-secondary"><%= l(Time.current, format: :short) %></span>
   </div>

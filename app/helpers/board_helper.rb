@@ -19,6 +19,15 @@ module BoardHelper
     { title: "Afwezig",        statuses: %w[vakantie ziek afwezig] }
   ].freeze
 
+    ZONES = [
+    { key: "kantoor",   title: "Op kantoor",     statuses: %w[kantoor] },
+    { key: "thuis",     title: "Werkt thuis",    statuses: %w[thuis] },
+    { key: "overleg",   title: "In overleg",     statuses: %w[overleg] },
+    { key: "bij-klant", title: "Bij klant",      statuses: %w[bij_klant] },
+    { key: "prive",     title: "Privé afspraak", statuses: %w[prive] },
+    { key: "afwezig",   title: "Afwezig",        statuses: %w[vakantie ziek afwezig] }
+  ].freeze
+
   def status_badge(status)
     display = STATUS_DISPLAY.fetch(status)
     tag.span(display[:label], class: "badge text-bg-#{display[:color]}")

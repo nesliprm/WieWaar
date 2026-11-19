@@ -40,3 +40,43 @@ $border-radius-lg: 1.25rem;
   --ww-status-away: #{$kempen-orange};
   --ww-status-off: #A3AAB2;
 }
+
+// 5. Board zones
+.zone {
+  --zone-color: var(--ww-status-office);
+  border: 0;
+  border-top: 4px solid var(--zone-color);
+  box-shadow: 0 1px 3px rgba($kempen-navy, 0.08);
+
+  .card-header {
+    background: $white;
+    border-bottom: 0;
+    font-size: 1.15rem;
+    padding-top: 1rem;
+  }
+
+  .list-group-item {
+    font-size: 1.1rem;
+    border-color: $kempen-bg;
+  }
+}
+
+.zone__count {
+  background: var(--zone-color);
+  color: $white;
+  border-radius: 999px;
+  padding: 0 0.6rem;
+  font-weight: 600;
+}
+
+.zone__empty {
+  color: $kempen-muted;
+  font-style: italic;
+}
+
+.zone--kantoor   { --zone-color: var(--ww-status-office); }
+.zone--thuis     { --zone-color: var(--ww-status-home); }
+.zone--overleg   { --zone-color: #{$kempen-link}; }
+.zone--bij-klant { --zone-color: #{$success}; }
+.zone--prive     { --zone-color: var(--ww-status-away); }
+.zone--afwezig   { --zone-color: var(--ww-status-off); }

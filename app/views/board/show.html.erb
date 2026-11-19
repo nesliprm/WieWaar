@@ -18,10 +18,10 @@
     <% BoardHelper::ZONES.each do |zone| %>
       <% people = @statuses.select { |_employee, status| zone[:statuses].include?(status) } %>
       <div class="col-12 col-md-6 col-xl-4">
-        <div class="card h-100">
+        <div class="card h-100 zone zone--<%= zone[:key] %>">
           <div class="card-header d-flex justify-content-between">
             <strong><%= zone[:title] %></strong>
-            <span class="text-secondary"><%= people.size %></span>
+            <span class="zone__count"><%= people.size %></span>
           </div>
           <ul class="list-group list-group-flush">
             <% people.each do |employee, status| %>
@@ -37,7 +37,7 @@
               </li>
             <% end %>
             <% if people.empty? %>
-              <li class="list-group-item text-secondary">-</li>
+              <li class="list-group-item zone__empty">-</li>
             <% end %>
           </ul>
         </div>
