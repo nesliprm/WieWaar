@@ -10,7 +10,7 @@ Calendar. That sync is not built yet, so for now the board runs on seed and demo
 
 ## Stack
 
-- Ruby 4.0.7, Rails 8.1
+- Ruby 4.0.10, Rails 8.1
 - PostgreSQL
 - Hotwire (Turbo + Stimulus), importmap
 - Bootstrap 5.3 via dartsass-rails, Kempen colours in `app/assets/stylesheets/application.scss`
@@ -19,7 +19,7 @@ Calendar. That sync is not built yet, so for now the board runs on seed and demo
 
 ## Getting started
 
-Requirements: Ruby 4.0.7 and a running PostgreSQL (locally e.g. Homebrew `postgresql@17`).
+Requirements: Ruby 4.0.10 and a running PostgreSQL (locally e.g. Homebrew `postgresql@17`).
 
 ```bash
 bin/setup        # installs gems, prepares the database and starts the server
