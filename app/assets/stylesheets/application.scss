@@ -141,10 +141,10 @@ html {
   min-width: 0;
 }
 
-// Placeholder avatar: white circle with a ring in the zone color.
+// Placeholder avatar
 .avatar {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 4rem;
+  height: 4rem;
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -157,6 +157,14 @@ html {
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
+}
+
+// Avatar with an image
+.avatar--image {
+  box-shadow: none;
+  // border: 2px solid var(--zone-color);
+  background: color-mix(in srgb, var(--zone-color) 50%, transparent);
+  object-fit: cover;
 }
 
 .zone--afwezig .avatar { color: $kempen-muted; }
@@ -200,7 +208,7 @@ html {
     padding: 0.6rem 0.8rem;
   }
 
-  .avatar { width: 2.25rem; height: 2.25rem; font-size: 0.8rem; }
+  .avatar { width: 3.25rem; height: 3.25rem; font-size: 1.15rem; }
 
   // Line the label up under the name, not under the avatar
   .zone__tag,
