@@ -10,7 +10,7 @@ Calendar. That sync is not built yet, so for now the board runs on seed and demo
 
 ## Stack
 
-- Ruby 4.0.7, Rails 8.1
+- Ruby 4.0.10, Rails 8.1
 - PostgreSQL
 - Hotwire (Turbo + Stimulus), importmap
 - Bootstrap 5.3 via dartsass-rails, Kempen colours in `app/assets/stylesheets/application.scss`
@@ -19,7 +19,7 @@ Calendar. That sync is not built yet, so for now the board runs on seed and demo
 
 ## Getting started
 
-Requirements: Ruby 4.0.7 and a running PostgreSQL (locally e.g. Homebrew `postgresql@17`).
+Requirements: Ruby 4.0.10 and a running PostgreSQL (locally e.g. Homebrew `postgresql@17`).
 
 ```bash
 bin/setup        # installs gems, prepares the database and starts the server
@@ -72,18 +72,9 @@ all day) and the names on Ticketdienst. Everyone not listed shows as "Op kantoor
   the zone colour.
 - Only who, when and status are stored, never event titles.
 
-## Tests
+## TODO
 
-```bash
-bin/rails test
-```
-
-CI (GitHub Actions, `.github/workflows/ci.yml`) runs Brakeman, bundler-audit,
-importmap audit, RuboCop and the tests.
-
-## Still to do
-
-- Tests for `Employee.statuses_for`
+- Tests
 - Google Calendar sync (service account with domain-wide delegation, push
   notifications + sync tokens, rules plus AI to tell client visits from private
   appointments)
