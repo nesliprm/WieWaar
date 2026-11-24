@@ -28,4 +28,21 @@ class Employee < ApplicationRecord
   def statuses_at(time = Time.current)
     self.class.statuses_for(current_events_at(time))
   end
+
+  # Initials for the placeholder avatar. Falls back to the first letters of
+  # name and surname (or the first two letters of the name) when none are set.
+  def avatar_initials
+    return initials.upcase if initials.present?
+    return "#{name.first}#{surname.first}".upcase if surname.present?
+
+    name.first(2).upcase
+  end
+
+  # Path of the avatar image in app/assets/images/avatars, based on the
+  # first name in lowercase without hyphens ("Willem-Jan" -> "avatars/willemjan.png").
+  # Returns nil when there is no image, so the view can show initials.
+  def avatar_image
+    path = "avatars/#{name.downcase.delete('-')}.png"
+    path if Rails.application.assets.load_path.find(path)
+  end
 end

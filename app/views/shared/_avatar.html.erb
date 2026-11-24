@@ -1,0 +1,6 @@
+<%# Avatar: the person's image when there is one, otherwise a circle with initials.%>
+<% if (image = employee.avatar_image) %>
+  <%= image_tag image, alt: "", class: "avatar avatar--image" %>
+<% else %>
+  <span class="avatar" aria-hidden="true"><%= employee.avatar_initials %></span>
+<% end %>

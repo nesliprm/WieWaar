@@ -48,6 +48,12 @@ $border-radius-lg: 1.25rem;
   --ww-status-client: #{$kempen-petrol};
 }
 
+// Everything is sized in rem, so this one line scales all text with the screen:
+// 16px on a TV/large screen, gradually down to 13px on smaller laptops.
+html {
+  font-size: clamp(13px, 0.45vw + 8px, 16px);
+}
+
 // 5. Board
 .board-grid {
   display: grid;
@@ -82,6 +88,8 @@ $border-radius-lg: 1.25rem;
   border-radius: 1.25rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
+  // Lets the rules below react to the width of the zone itself, not the screen.
+  container-type: inline-size;
 }
 
 .zone__header {
@@ -119,11 +127,47 @@ $border-radius-lg: 1.25rem;
 .zone__person {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   background: $kempen-bg;
   border-radius: 1rem;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.75rem;
 }
+
+// Avatar + name, side by side
+.zone__who {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+// Placeholder avatar
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: $white;
+  box-shadow: inset 0 0 0 2px var(--zone-color);
+  color: $kempen-navy;
+  font-family: $headings-font-family;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+}
+
+// Avatar with an image
+.avatar--image {
+  box-shadow: none;
+  // border: 2px solid var(--zone-color);
+  background: color-mix(in srgb, var(--zone-color) 50%, transparent);
+  object-fit: cover;
+}
+
+.zone--afwezig .avatar { color: $kempen-muted; }
 
 .zone__name {
   font-family: $headings-font-family;
@@ -149,6 +193,28 @@ $border-radius-lg: 1.25rem;
 
 .zone--prive .zone__person { background: rgba($kempen-lilac, 0.1); }
 
+// Narrow zones (e.g. the small columns on a 13" laptop):
+// smaller titles so they stay on one line, and labels move under the name.
+// Note: 280px is the zone's INNER width (without its padding).
+@container (max-width: 280px) {
+  .zone__title { font-size: 1.2rem; }
+  .zone__count { font-size: 1.05rem; }
+  .zone__name  { font-size: 1.1rem; }
+
+  .zone__person {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .avatar { width: 3.25rem; height: 3.25rem; font-size: 1.15rem; }
+
+  // Line the label up under the name, not under the avatar
+  .zone__tag,
+  .zone__tag-icon { align-self: flex-start; margin-left: 3rem; }
+}
+
 .zone--kantoor   { --zone-color: var(--ww-status-office); }
 .zone--thuis     { --zone-color: var(--ww-status-home); }
 .zone--overleg   { --zone-color: var(--ww-status-meeting); }
@@ -163,10 +229,16 @@ $border-radius-lg: 1.25rem;
   background: $white;
   box-shadow: 0 1px 3px rgba($kempen-navy, 0.06);
 
+  // In rem, so the logo scales with the rest of the header on smaller screens.
+  &__logo {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
   &__brand {
     font-family: $headings-font-family;
     font-weight: 800;
-    font-size: 1.9rem;
+    font-size: 2.4rem;
     line-height: 1;
     color: $kempen-navy;
     span { color: $kempen-link; font-weight: 600; }
@@ -175,8 +247,10 @@ $border-radius-lg: 1.25rem;
   &__sub {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
+    margin-left: 0.5rem;
+    margin-top: 0.3rem;
     color: $kempen-muted;
   }
 
@@ -190,4 +264,17 @@ $border-radius-lg: 1.25rem;
   }
 
   &__date { color: $kempen-muted; }
+
+  &__brand,
+  &__sub,
+  &__date { white-space: nowrap; }
+
+  // Phones (below 576px): everything smaller so it stays on one row.
+  @include media-breakpoint-down(sm) {
+    &__logo  { width: 2.5rem; height: 2.5rem; }
+    &__brand { font-size: 1.3rem; }
+    &__sub   { font-size: 0.6rem; letter-spacing: 0.2em; margin-left: 0.15rem; margin-top: 0.2rem; }
+    &__clock { font-size: 1.75rem; }
+    &__date  { font-size: 0.75rem; }
+  }
 }
